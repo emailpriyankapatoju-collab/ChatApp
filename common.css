@@ -1,0 +1,130 @@
+/* ============================================================
+   Common Styles — Shared variables, reset, and utilities
+   Used across login, signup, and chat pages
+   ============================================================ */
+
+:root {
+  /* WhatsApp-inspired palette */
+  --wa-teal: #008069;
+  --wa-teal-dark: #075e54;
+  --wa-teal-light: #00a884;
+  --wa-green-bubble: #d9fdd3;
+  --wa-bg: #f0f2f5;
+  --wa-sidebar: #ffffff;
+  --wa-border: #e9edef;
+  --wa-text: #111b21;
+  --wa-text-secondary: #667781;
+  --wa-hover: #f5f6f6;
+  --wa-danger: #ea0038;
+  --wa-shadow: 0 2px 8px rgba(11, 20, 26, 0.08);
+  --wa-radius: 8px;
+  --font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, 'Lucida Grande', Arial, sans-serif;
+  --transition: 0.2s ease;
+}
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--wa-text);
+  background: var(--wa-bg);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--wa-teal-light);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input,
+textarea {
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid var(--wa-teal-light);
+  outline-offset: 2px;
+}
+
+/* Utility: hide visually but keep for screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* Loading spinner */
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--wa-border);
+  border-top-color: var(--wa-teal-light);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  padding: 12px 24px;
+  background: #323739;
+  color: #fff;
+  border-radius: var(--wa-radius);
+  font-size: 0.875rem;
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast.error {
+  background: var(--wa-danger);
+}
+
+/* Utility: hide element */
+.hidden {
+  display: none !important;
+}

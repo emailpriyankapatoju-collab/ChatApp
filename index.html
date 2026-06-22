@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Login to ChatApp — Real-time messaging powered by Firebase">
+  <title>Login | ChatApp</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+  <main class="auth-page">
+    <div class="auth-container">
+
+      <!-- Brand -->
+      <header class="auth-brand">
+        <div class="auth-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.37 5.07L2 22l4.93-1.37C8.42 21.5 10.15 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.64 0-3.18-.47-4.48-1.28l-.32-.19-2.89.8.8-2.89-.19-.32C4.47 15.18 4 13.64 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z"/>
+          </svg>
+        </div>
+        <h1>ChatApp</h1>
+        <p>Real-time messaging, simplified</p>
+      </header>
+
+      <!-- Login Card -->
+      <section class="auth-card" aria-labelledby="login-heading">
+        <h2 id="login-heading">Sign in to your account</h2>
+        <p class="subtitle">Enter your credentials to continue</p>
+
+        <form id="login-form" class="auth-form" novalidate>
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            >
+            <span id="email-error" class="form-error" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required
+            >
+            <span id="password-error" class="form-error" role="alert"></span>
+          </div>
+
+          <button type="submit" id="login-btn" class="btn-primary">Sign In</button>
+        </form>
+
+        <footer class="auth-footer">
+          Don't have an account? <a href="signup.html">Create one</a>
+        </footer>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Firebase SDK (Compat version for vanilla JS) -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ChatApp — Real-time messaging with Firebase">
+  <title>Chat | ChatApp</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/chat.css">
+</head>
+<body>
+
+  <!-- Loading overlay shown until auth resolves -->
+  <div id="loading-overlay" class="loading-overlay" aria-live="polite">
+    <div class="spinner"></div>
+    <p>Loading your chats...</p>
+  </div>
+
+  <div class="chat-app">
+
+    <!-- ========== Sidebar ========== -->
+    <aside id="chat-sidebar" class="chat-sidebar" aria-label="Contacts">
+
+      <!-- Sidebar header with current user info -->
+      <header class="sidebar-header">
+        <div class="user-info">
+          <div id="current-user-avatar" class="avatar" aria-hidden="true">?</div>
+          <span id="current-user-name" class="user-name">Loading...</span>
+        </div>
+        <div class="sidebar-actions">
+          <button id="logout-btn" class="icon-btn" aria-label="Log out" title="Log out">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Search users -->
+      <div class="sidebar-search">
+        <div class="search-input-wrap">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
+          <input
+            type="search"
+            id="user-search"
+            placeholder="Search users..."
+            aria-label="Search users"
+          >
+        </div>
+      </div>
+
+      <!-- User list populated by JavaScript -->
+      <ul id="user-list" class="user-list" role="list"></ul>
+    </aside>
+
+    <!-- ========== Main Chat Area ========== -->
+    <main class="chat-main">
+
+      <!-- Empty state (no chat selected) -->
+      <div id="chat-empty" class="chat-empty">
+        <svg class="chat-empty-icon" viewBox="0 0 303 172" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path fill="#DAF7F3" d="M229.565 160.229c-4.096-4.096-10.752-4.096-14.848 0l-1.472 1.472c-4.096 4.096-4.096 10.752 0 14.848 4.096 4.096 10.752 4.096 14.848 0l1.472-1.472c4.096-4.096 4.096-10.752 0-14.848z"/>
+          <path fill="#DAF7F3" d="M151.5 0C67.863 0 0 67.863 0 151.5S67.863 303 151.5 303 303 235.137 303 151.5 235.137 0 151.5 0zm0 280.5c-71.196 0-129-57.804-129-129S80.304 22.5 151.5 22.5 280.5 80.304 280.5 151.5 222.696 280.5 151.5 280.5z"/>
+          <path fill="#00A884" d="M151.5 45c-58.71 0-106.5 47.79-106.5 106.5 0 19.305 5.175 37.425 14.175 53.055L45 258l53.445-14.175c15.63 9 33.75 14.175 53.055 14.175 58.71 0 106.5-47.79 106.5-106.5S210.21 45 151.5 45z"/>
+        </svg>
+        <h2>ChatApp Web</h2>
+        <p>Send and receive messages in real-time. Select a user from the sidebar to start chatting, or invite friends to sign up and join the conversation.</p>
+      </div>
+
+      <!-- Active chat view -->
+      <div id="chat-view" class="chat-view hidden">
+
+        <!-- Chat header -->
+        <header class="chat-header">
+          <button id="back-btn" class="icon-btn back-btn" aria-label="Back to contacts">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+            </svg>
+          </button>
+          <div id="chat-header-avatar" class="avatar" aria-hidden="true">?</div>
+          <div class="chat-user-info">
+            <h3 id="chat-header-name">User</h3>
+            <p id="chat-header-status">Offline</p>
+          </div>
+        </header>
+
+        <!-- Messages -->
+        <div id="messages-container" class="messages-container" role="log" aria-live="polite" aria-label="Chat messages"></div>
+
+        <!-- Message input -->
+        <form id="message-form" class="message-input-area">
+          <div class="message-input-wrap">
+            <label for="message-input" class="sr-only">Type a message</label>
+            <input
+              type="text"
+              id="message-input"
+              placeholder="Type a message"
+              autocomplete="off"
+              maxlength="1000"
+            >
+          </div>
+          <button type="submit" id="send-btn" class="btn-send" aria-label="Send message">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/chat.js"></script>
+</body>
+</html>
