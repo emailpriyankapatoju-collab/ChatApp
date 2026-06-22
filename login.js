@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const passwordError = document.getElementById('password-error');
 
   // Redirect to chat if user is already logged in
-  auth.onAuthStateChanged((user) => {
+  window.auth.onAuthStateChanged((user) => {
     if (user) {
       window.location.href = 'chat.html';
     }
@@ -84,11 +84,11 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.innerHTML = '<span class="spinner"></span> Signing in...';
 
     try {
-      await auth.signInWithEmailAndPassword(email, password);
-      showToast('Welcome back!');
+      await window.auth.signInWithEmailAndPassword(email, password);
+      window.showToast('Welcome back!');
       window.location.href = 'chat.html';
     } catch (error) {
-      showToast(getAuthErrorMessage(error.code), 'error');
+      window.showToast(getAuthErrorMessage(error.code), 'error');
       submitBtn.disabled = false;
       submitBtn.textContent = 'Sign In';
     }
