@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const confirmError = document.getElementById('confirm-error');
 
   // Redirect if already authenticated
-  auth.onAuthStateChanged((user) => {
+  window.auth.onAuthStateChanged((user) => {
     if (user) {
       window.location.href = 'chat.html';
     }
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
    * @param {string} displayName - User's display name
    */
   async function createUserProfile(user, displayName) {
-    await db.collection('users').doc(user.uid).set({
+    await window.db.collection('users').doc(user.uid).set({
       uid: user.uid,
       displayName: displayName,
       email: user.email,
@@ -127,14 +127,14 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.innerHTML = '<span class="spinner"></span> Creating account...';
 
     try {
-      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+      const userCredential = await window.auth.createUserWithEmailAndPassword(email, password);
       await userCredential.user.updateProfile({ displayName });
       await createUserProfile(userCredential.user, displayName);
 
-      showToast('Account created successfully!');
+      window.showToast('Account created successfully!');
       window.location.href = 'chat.html';
     } catch (error) {
-      showToast(getAuthErrorMessage(error.code), 'error');
+      window.showToast(getAuthErrorMessage(error.code), 'error');
       submitBtn.disabled = false;
       submitBtn.textContent = 'Create Account';
     }
