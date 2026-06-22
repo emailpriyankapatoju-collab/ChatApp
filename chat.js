@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
      Authentication Guard
      Redirect to login if not authenticated
      ============================================================ */
-  auth.onAuthStateChanged(async (user) => {
+  window.auth.onAuthStateChanged(async (user) => {
     if (!user) {
       window.location.href = 'index.html';
       return;
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update sidebar with current user info
     currentUserName.textContent = displayName;
-    currentUserAvatar.textContent = getInitials(displayName);
+    currentUserAvatar.textContent = window.getInitials(displayName);
 
     // Mark user as online in Firestore
     await updateUserPresence(true);
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   async function updateUserPresence(online) {
     if (!currentUser) return;
-    await db.collection('users').doc(currentUser.uid).set(
+    await window.db.collection('users').doc(currentUser.uid).set(
       {
         online,
         lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
      User List — Real-time listener for all registered users
      ============================================================ */
   function listenToUsers() {
-    usersUnsubscribe = db
+    usersUnsubscribe = window.db
       .collection('users')
       .orderBy('displayName')
       .onSnapshot((snapshot) => {
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
           role="button"
           tabindex="0"
           aria-label="Chat with ${user.displayName}">
-        <div class="avatar">${getInitials(user.displayName)}</div>
+        <div class="avatar">${window.getInitials(user.displayName)}</div>
         <div class="user-details">
           <h3>${escapeHtml(user.displayName)}</h3>
           <p class="last-message">${user.online ? 'Online' : 'Offline'}</p>
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chatView.classList.remove('hidden');
     chatHeaderName.textContent = selectedUser.displayName;
     chatHeaderStatus.textContent = selectedUser.online ? 'Online' : 'Offline';
-    chatHeaderAvatar.textContent = getInitials(selectedUser.displayName);
+    chatHeaderAvatar.textContent = window.getInitials(selectedUser.displayName);
 
     // Highlight active user in sidebar
     userList.querySelectorAll('.user-list-item').forEach((item) => {
@@ -200,10 +200,10 @@ document.addEventListener('DOMContentLoaded', () => {
       messagesUnsubscribe();
     }
 
-    const chatRoomId = getChatRoomId(currentUser.uid, selectedUser.uid);
+    const chatRoomId = window.getChatRoomId(currentUser.uid, selectedUser.uid);
     messagesContainer.innerHTML = '';
 
-    messagesUnsubscribe = db
+    messagesUnsubscribe = window.db
       .collection('messages')
       .where('chatRoomId', '==', chatRoomId)
       .orderBy('createdAt', 'asc')
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ${!isSent ? `<div class="message-sender">${escapeHtml(msg.senderName)}</div>` : ''}
         <div class="message-text">${escapeHtml(msg.text)}</div>
         <div class="message-meta">
-          <span class="message-time">${formatMessageTime(msg.createdAt)}</span>
+          <span class="message-time">${window.formatMessageTime(msg.createdAt)}</span>
         </div>
       </div>`;
 
@@ -298,9 +298,9 @@ document.addEventListener('DOMContentLoaded', () => {
     messageInput.disabled = true;
 
     try {
-      const chatRoomId = getChatRoomId(currentUser.uid, selectedUser.uid);
+      const chatRoomId = window.getChatRoomId(currentUser.uid, selectedUser.uid);
 
-      await db.collection('messages').add({
+      await window.db.collection('messages').add({
         text,
         senderId: currentUser.uid,
         senderName: currentUser.displayName || currentUser.email.split('@')[0],
@@ -311,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       messageInput.value = '';
     } catch (error) {
-      showToast('Failed to send message. Try again.', 'error');
+      window.showToast('Failed to send message. Try again.', 'error');
       console.error('Send error:', error);
     } finally {
       sendBtn.disabled = false;
@@ -336,10 +336,10 @@ document.addEventListener('DOMContentLoaded', () => {
       await updateUserPresence(false);
       if (messagesUnsubscribe) messagesUnsubscribe();
       if (usersUnsubscribe) usersUnsubscribe();
-      await auth.signOut();
+      await window.auth.signOut();
       window.location.href = 'index.html';
     } catch (error) {
-      showToast('Logout failed. Try again.', 'error');
+      window.showToast('Logout failed. Try again.', 'error');
     }
   });
 
