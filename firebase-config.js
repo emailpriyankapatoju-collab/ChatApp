@@ -5,14 +5,16 @@
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyCAIVmoNRUI3-c3zmFcUtJPzwA8-J3q_50',
-  authDomain: 'chatapp-4d8eb.firebaseapp.com',
-  projectId: 'chatapp-4d8eb',
-  storageBucket: 'chatapp-4d8eb.firebasestorage.app',
-  messagingSenderId: '1051457910523',
-  appId: '1:1051457910523:web:08edf884e91dea10e3a25e',
-  measurementId: 'G-CTP78RF7BG',
+  apiKey: "AIzaSyDRJjIsz0R78a0-Bml6OOyo5ZlOxnDjVrc",
+  authDomain: "chatapp-2dd06.firebaseapp.com",
+  projectId: "chatapp-2dd06",
+  storageBucket: "chatapp-2dd06.firebasestorage.app",
+  messagingSenderId: "591665732317",
+  appId: "1:591665732317:web:15d92b1d688a9bb1c7d934",
+  measurementId: "G-KDGG3GYD56"
 };
+
+
 
 // Initialize Firebase Compat SDK
 firebase.initializeApp(firebaseConfig);
