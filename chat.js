@@ -64,14 +64,17 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   async function updateUserPresence(online) {
     if (!currentUser) return;
-    await window.db.collection('users').doc(user.uid).set({
-      uid: user.uid,
-      displayName: displayName,
-      email: user.email,
-      online: true,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      lastSeen: firebase.firestore.FieldValue.serverTimestamp()
-  });
+    async function updateUserPresence(online) {
+      if (!currentUser) return;
+  
+      await window.db.collection('users').doc(currentUser.uid).set(
+      {
+          online: online,
+          lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+      },
+      { merge: true }
+      );
+  }
      
   // Set offline when user closes tab
   window.addEventListener('beforeunload', () => {
