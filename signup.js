@@ -102,17 +102,15 @@ document.addEventListener('DOMContentLoaded', () => {
    * @param {object} user - Firebase auth user object
    * @param {string} displayName - User's display name
    */
-  async function createUserProfile(user, displayName) {
+ async function createUserProfile(user, displayName) {
     await window.db.collection('users').doc(user.uid).set({
-      uid: user.uid,
-      displayName: displayName,
-      email: user.email,
-      photoURL: user.photoURL || null,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
-      online: true,
+        uid: user.uid,
+        displayName: displayName,
+        email: user.email,
+        online: true,
+        lastSeen: new Date()
     });
-  }
+}
 
   // Handle form submission
   signupForm.addEventListener('submit', async (e) => {
