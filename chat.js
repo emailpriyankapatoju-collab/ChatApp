@@ -64,30 +64,30 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   async function updateUserPresence(online) {
     if (!currentUser) return;
-    await window.db.collection('users').doc(currentUser.uid).set(
-      {
-        online,
-        lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
-      },
-      { merge: true }
-    );
-  }
-
+    await window.db.collection('users').doc(user.uid).set({
+      uid: user.uid,
+      displayName: displayName,
+      email: user.email,
+      online: true,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+  });
+     
   // Set offline when user closes tab
   window.addEventListener('beforeunload', () => {
     if (currentUser) {
       updateUserPresence(false);
     }
   });
+}
 
   /* ============================================================
      User List — Real-time listener for all registered users
      ============================================================ */
-  function listenToUsers() {
-    usersUnsubscribe = window.db
-      .collection('users')
-      .orderBy('displayName')
-      .onSnapshot((snapshot) => {
+     function listenToUsers() {
+      usersUnsubscribe = window.db
+          .collection('users')
+          .onSnapshot((snapshot) => {
         allUsers = [];
         snapshot.forEach((doc) => {
           const userData = doc.data();
