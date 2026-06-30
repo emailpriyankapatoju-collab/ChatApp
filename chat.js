@@ -64,25 +64,25 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   async function updateUserPresence(online) {
     if (!currentUser) return;
-    async function updateUserPresence(online) {
-      if (!currentUser) return;
   
-      await window.db.collection('users').doc(currentUser.uid).set(
+    await window.db.collection('users').doc(currentUser.uid).set(
       {
-          online: online,
-          lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+        uid: currentUser.uid,
+        displayName: currentUser.displayName || currentUser.email.split('@')[0],
+        email: currentUser.email,
+        online: online,
+        lastSeen: firebase.firestore.FieldValue.serverTimestamp()
       },
       { merge: true }
-      );
-  }
-     
+    );
+  }     
   // Set offline when user closes tab
   window.addEventListener('beforeunload', () => {
     if (currentUser) {
       updateUserPresence(false);
     }
   });
-}
+
 
   /* ============================================================
      User List — Real-time listener for all registered users
@@ -363,9 +363,10 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ============================================================
      Utility — Escape HTML to prevent XSS
      ============================================================ */
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
+     function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
   }
-});
+
+  });
